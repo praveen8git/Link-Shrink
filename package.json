@@ -4,7 +4,7 @@
   "description": "basic url shortner",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm dev\" "
+    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\" "
   },
   "keywords": [
     "url",
