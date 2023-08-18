@@ -1,14 +1,53 @@
 import { React, useState, useRef } from "react";
 import axios from "axios";
 
-// const inputRef = useRef(null);
+const postURL = "http://localhost:3100/shrink"
 
-function shrink (e){
-  
-  console.info(inputRef.current)
-}
+//following regex willbe used to validate the URL entered by user in input field
+const urlRegex = /^(https?):\/\/(([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+(:([a-z0-9$_\.\+!\*\'\(\),;\?&=-]|%[0-9a-f]{2})+)?@)?((([a-z0-9]\.|[a-z0-9][a-z0-9-]*[a-z0-9]\.)*[a-z][a-z0-9-]*[a-z0-9]|((\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5])\.){3}(\d|[1-9]\d|1\d{2}|2[0-4][0-9]|25[0-5]))(:\d+)?)(((\/+([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)*(\?([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)?)?)?(#([a-z0-9$_\.\+!\*\'\(\),;:@&=-]|%[0-9a-f]{2})*)?$/i
 
 function Main() {
+  const inputRef = useRef(null);
+  const [shortURL, setShortURL] = useState();
+  const [copyBtn, setCopyBtn] = useState("copy");
+  const [btnDisable, setBtnDisable] = useState(true);
+
+  function shrink(e) {
+    console.info(inputRef.current.value);
+    const longURL = inputRef.current.value;
+    setCopyBtn("copy");
+
+    if (!urlRegex.test(longURL)) 
+    {
+      console.log("invalid URL");
+      setShortURL("invalid URL")
+      return
+    }
+    else {
+      console.log("URL valid");
+
+      axios.post(postURL, {
+        longUrl: longURL
+      })
+      .then( function (response) {
+        console.log(response);
+        setShortURL(response.data.data);
+        setBtnDisable(false)
+      })
+      .catch(function(error){
+        console.error(error);
+      })
+      return
+    }
+  }
+  // shrink function ends here
+
+  function copy (e) {
+    navigator.clipboard.writeText(shortURL);
+    setCopyBtn("copied! ✅");
+    
+  }
+
   return (
     <div className="container w-screen min-h-screen text-center grid justify-center items-center">
       <div className="columns-1 w-full">
@@ -37,7 +76,7 @@ function Main() {
                 p-8 m-8 mx-12 min-w-full"
                 placeholder="https://"
                 required
-                // ref={inputRef}
+                ref={inputRef}
               />
             </div>
             <div className="w-full justify-self-start">
@@ -54,8 +93,14 @@ function Main() {
             </div>
           </div>
           <div className="w-full grid grid-flow-col auto-cols-max justify-center my-2">
-             <a id="shrinked" href="https://short.link" > https://short.link </a>
-             <button id="copy" className="-my-3 mx-2 font-mono" >copy</button>
+             <a id="shrinked" target="_blank" href={shortURL} > {shortURL} </a>
+             <button 
+              id="copy"
+              className="-my-3 mx-2 font-mono"
+              disabled={btnDisable}
+              onClick={copy} >
+              {copyBtn}
+             </button>
           </div>
         </div>
       </div>
