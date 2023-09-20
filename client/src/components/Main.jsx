@@ -63,6 +63,7 @@ function Main() {
           >
             URL Compressor
           </h1>
+        </div>
           <p className="font-mono pt-2 ">Enter long URL below</p>
           <div className="w-full grid grid-flow-col auto-cols-max justify-center ">
             <div className="w-full">
@@ -72,7 +73,8 @@ function Main() {
                 id="longUrl"
                 className="border rounded-r rounded-full
                 border-purple-600 border-r-0 shadow-md
-                hover:border-pink-600
+                truncate
+                hover:border-indigo-600
                 p-8 m-8 mx-12 min-w-full"
                 placeholder="https://"
                 required
@@ -86,7 +88,8 @@ function Main() {
               className="rounded-l rounded-full
                 border-purple-600 border-l-0 shadow-md
                 bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700
-                text-transparent bg-clip-text
+                text-transparent bg-clip-text 
+                hover:border-indigo-600
                 p-8 px-7 m-8 mx-12 min-w-fit">
               Shrink
             </button>
@@ -102,7 +105,7 @@ function Main() {
               {copyBtn}
              </button>
           </div>
-        </div>
+        
       </div>
     </div>
   );
