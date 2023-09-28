@@ -4,6 +4,8 @@
   "description": "basic url shortner",
   "main": "index.js",
   "scripts": {
+    "preinstall": "cd client && npm install",
+    "postinstall": "cd server && npm install",
     "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\" "
   },
   "keywords": [
