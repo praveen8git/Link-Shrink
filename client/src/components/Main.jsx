@@ -11,16 +11,25 @@ function Main() {
   const [shortURL, setShortURL] = useState();
   const [copyBtn, setCopyBtn] = useState("copy");
   const [btnDisable, setBtnDisable] = useState(true);
+  const [inputValue, setInputValue] = useState('');
+  const [isShrinkDisabled, setIsShrinkDisabled] = useState(true);
+
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+    setIsShrinkDisabled(newValue === '');
+  }
 
   function shrink(e) {
     console.info(inputRef.current.value);
     const longURL = inputRef.current.value;
+    console.log(longURL)
     setCopyBtn("copy");
 
     if (!urlRegex.test(longURL)) 
     {
-      console.log("invalid URL");
-      setShortURL("invalid URL")
+      console.log("Invalid URL");
+      setShortURL("Invalid URL")
       return
     }
     else {
@@ -35,7 +44,7 @@ function Main() {
         setBtnDisable(false)
       })
       .catch(function(error){
-        console.error(error);
+        console.log(error);
       })
       return
     }
@@ -77,6 +86,8 @@ function Main() {
                 hover:border-indigo-600
                 p-8 m-8 mx-12 min-w-full"
                 placeholder="https://"
+                value={inputValue}
+                onChange={handleInputChange}
                 required
                 ref={inputRef}
               />
@@ -84,19 +95,21 @@ function Main() {
             <div className="w-full justify-self-start">
             <button 
               type="submit"
-              onClick={shrink}
+              // onClick={shrink}
               className="rounded-l rounded-full
                 border-purple-600 border-l-0 shadow-md
                 bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700
                 text-transparent bg-clip-text 
                 hover:border-indigo-600
-                p-8 px-7 m-8 mx-12 min-w-fit">
+                p-8 px-7 m-8 mx-12 min-w-fit"
+              onClick={shrink}
+              disabled={isShrinkDisabled}>
               Shrink
             </button>
             </div>
           </div>
           <div className="w-full grid grid-flow-col auto-cols-max justify-center my-2">
-             <a id="shrinked" target="_blank" href={shortURL} > {shortURL} </a>
+            {shortURL==="Invalid URL" ? <div>Invalid URL</div> : <a id="shrinked" target="_blank" href={shortURL} > {shortURL} </a>}
              <button 
               id="copy"
               className="-my-3 mx-2 font-mono"
