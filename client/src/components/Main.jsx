@@ -44,6 +44,7 @@ function Main() {
       })
       .catch(function(error){
         console.error(error);
+        setLoading(false);
       })
       return 
     }
