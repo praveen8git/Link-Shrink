@@ -1,5 +1,7 @@
 import { React, useState, useRef } from "react";
 import axios from "axios";
+import Loader from "./Loader";
+import { useEffect } from "react";
 
 const postURL = "http://localhost:3100/shrink"
 
@@ -11,8 +13,14 @@ function Main() {
   const [shortURL, setShortURL] = useState();
   const [copyBtn, setCopyBtn] = useState("copy");
   const [btnDisable, setBtnDisable] = useState(true);
+  const [loading,setLoading] = useState(false);
+
+   useEffect(()=>{
+       setLoading(false);
+   },[shortURL])
 
   function shrink(e) {
+    setLoading(true);
     console.info(inputRef.current.value);
     const longURL = inputRef.current.value;
     setCopyBtn("copy");
@@ -32,12 +40,12 @@ function Main() {
       .then( function (response) {
         console.log(response);
         setShortURL(response.data.data);
-        setBtnDisable(false)
+        setBtnDisable(false) 
       })
       .catch(function(error){
         console.error(error);
       })
-      return
+      return 
     }
   }
   // shrink function ends here
@@ -49,6 +57,7 @@ function Main() {
   }
 
   return (
+    <>
     <div className="w-[100%] h-[100vh] flex justify-center items-center px-5">
       <div className="mx-3 sm:max-w-[700px] max-w-[350px] text-center flex flex-col justify-center items-center">
         <div
@@ -106,9 +115,10 @@ function Main() {
               {copyBtn}
              </button>
           </div>
-        
       </div>
     </div>
+    {loading && <Loader/>}
+    </>
   );
 }
 
