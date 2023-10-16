@@ -49,14 +49,15 @@ function Main() {
   }
 
   return (
-    <div className="container w-screen min-h-screen text-center grid justify-center items-center">
-      <div className="columns-1 w-full">
+    <div className="w-[100%] h-[100vh] flex justify-center items-center px-5">
+      <div className="mx-3 sm:max-w-[700px] max-w-[350px] text-center flex flex-col justify-center items-center">
         <div
           className="w-full bg-clip-text
           bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700"
         >
           <h1
             className="
+            mx-2
             font-bold text-transparent 
             transition ease-in-out duration-1000 
             hover:text-purple-700"
@@ -65,23 +66,23 @@ function Main() {
           </h1>
         </div>
           <p className="font-mono pt-2 ">Enter long URL below</p>
-          <div className="w-full grid grid-flow-col auto-cols-max justify-center ">
+          <div className="w-full sm:m-8 mx-5 flex my-8 ">
             <div className="w-full">
               <input
                 type="url"
                 name="longUrl"
                 id="longUrl"
-                className="border rounded-r rounded-full
+                className="sm:max-w-[600px] max-w-[350px] border rounded-r rounded-full
                 border-purple-600 border-r-0 shadow-md
                 truncate
                 hover:border-indigo-600
-                p-8 m-8 mx-12 min-w-full"
+                sm:p-8 p-6 sm:mx-12 min-w-full"
                 placeholder="https://"
                 required
                 ref={inputRef}
               />
             </div>
-            <div className="w-full justify-self-start">
+            <div>
             <button 
               type="submit"
               onClick={shrink}
@@ -90,12 +91,12 @@ function Main() {
                 bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700
                 text-transparent bg-clip-text 
                 hover:border-indigo-600
-                p-8 px-7 m-8 mx-12 min-w-fit">
+                sm:p-8 p-6 sm:px-7 sm:mx-12 min-w-fit">
               Shrink
             </button>
             </div>
           </div>
-          <div className="w-full grid grid-flow-col auto-cols-max justify-center my-2">
+          <div className="w-full grid grid-flow-col auto-cols-max justify-center">
              <a id="shrinked" target="_blank" href={shortURL} > {shortURL} </a>
              <button 
               id="copy"
