@@ -5,3 +5,15 @@
 .gradient-transition{
   animation: linear alternate;
 }
+@layer utilities {
+  .animation-delay-200 {
+    animation-delay: 0.2s;
+  }
+  .animation-delay-400 {
+    animation-delay: 0.4s;
+  }
+}
+
+.dot {
+  @apply w-4 h-4 my-12 mx-1 bg-gray-400 rounded-full;
+}
