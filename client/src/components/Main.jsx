@@ -1,5 +1,6 @@
 import { React, useState, useRef } from "react";
 import axios from "axios";
+import Loader from "./Loader";
 
 const postURL = "http://localhost:3100/shrink"
 
@@ -11,8 +12,13 @@ function Main() {
   const [shortURL, setShortURL] = useState();
   const [copyBtn, setCopyBtn] = useState("copy");
   const [btnDisable, setBtnDisable] = useState(true);
+  const [loading,setLoading] = useState(false);
+  const [disabled, setDisable] = useState(false);
+
 
   function shrink(e) {
+    setDisable(true);
+    setLoading(true);
     console.info(inputRef.current.value);
     const longURL = inputRef.current.value;
     setCopyBtn("copy");
@@ -20,7 +26,9 @@ function Main() {
     if (!urlRegex.test(longURL)) 
     {
       console.log("invalid URL");
-      setShortURL("invalid URL")
+      setShortURL("invalid URL");
+      setLoading(false);
+      setDisable(false);
       return
     }
     else {
@@ -32,12 +40,16 @@ function Main() {
       .then( function (response) {
         console.log(response);
         setShortURL(response.data.data);
-        setBtnDisable(false)
+        setBtnDisable(false);
+        setDisable(false);
+        setLoading(false);
       })
       .catch(function(error){
         console.error(error);
+        setDisable(false);
+        setLoading(false);
       })
-      return
+      return 
     }
   }
   // shrink function ends here
@@ -49,6 +61,7 @@ function Main() {
   }
 
   return (
+    <>
     <div className="w-[100%] h-[100vh] flex justify-center items-center px-5">
       <div className="mx-3 sm:max-w-[700px] max-w-[350px] text-center flex flex-col justify-center items-center">
         <div
@@ -84,31 +97,32 @@ function Main() {
             </div>
             <div>
             <button 
+              disabled={disabled}
               type="submit"
               onClick={shrink}
-              className="rounded-l rounded-full
-                border-purple-600 border-l-0 shadow-md
-                bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700
-                text-transparent bg-clip-text 
-                hover:border-indigo-600
-                sm:p-8 p-6 sm:px-7 sm:mx-12 min-w-fit">
+              className={`${disabled ? "cursor-wait" : "cursor-pointer" } rounded-l rounded-full
+              border-purple-600 border-l-0 shadow-md
+              bg-gradient-to-tr from-indigo-700 via-purple-700 to-pink-700
+              text-transparent bg-clip-text 
+              hover:border-indigo-600
+              sm:p-8 p-6 sm:px-7 sm:mx-12 min-w-fit`}>
               Shrink
             </button>
             </div>
           </div>
-          <div className="w-full grid grid-flow-col auto-cols-max justify-center">
-             <a id="shrinked" target="_blank" href={shortURL} > {shortURL} </a>
+          <div className="grid grid-flow-col auto-cols-max justify-center h-[70px] items-center">
+             <a id="shrinked" className=" overflow-hidden max-w-[150px] sm:max-w-[300px]" target="_blank" href={shortURL} > { loading ? <Loader/> : shortURL }</a>
              <button 
               id="copy"
-              className="-my-3 mx-2 font-mono"
+              className="-my-3 mx-2 font-mono h-[50px] w-[150px]"
               disabled={btnDisable}
               onClick={copy} >
               {copyBtn}
              </button>
           </div>
-        
       </div>
     </div>
+    </>
   );
 }
 
